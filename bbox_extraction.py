@@ -74,9 +74,9 @@ def bbox_extraction(file_list='./data/images2.csv'):
             cv2.rectangle(img,(bbox['neck']['x1'], bbox['neck']['y1']), (bbox['neck']['x2'], bbox['neck']['y2']), color=(0, 0, 255), thickness=2)
             cv2.rectangle(img,(bbox['stomach']['x1'], bbox['stomach']['y1']),(bbox['stomach']['x2'], bbox['stomach']['y2']), color=(0, 0, 255), thickness=2)
 
-            cv2.imshow('img', img)
+            # cv2.imshow('img', img)
             # cv2.imwrite('./sample_11.jpg',img)
-            cv2.waitKey(0)
+            # cv2.waitKey(0)
 
             return bbox
 
