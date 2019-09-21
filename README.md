@@ -44,8 +44,6 @@ away from the camera. Some examples:
    **Good example**  
    
    ![Image](./data/inputs/204.jpg)
-
-   **Bad examples**
    
 2. Paste your picture in `data/inputs/`
 3. Run `python3 measure_body.py --image_name <name_of_your_image>.jpg`  
