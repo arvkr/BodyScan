@@ -1,0 +1,1 @@
+./data/inputs/204.jpg

@@ -1,8 +1,12 @@
+import math
+import time
+import argparse
+
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
-import math
 
+from options.measure_options import MeasureOptions
 from get_depth import depth_predict
 from bbox_extraction import bbox_extraction
 
@@ -14,8 +18,8 @@ def point_cloud(depth):
     tan_horFov = width_mm / (2 * f_mm)
     tan_verFov = height_mm / (2 * f_mm)
 
-    width = 640
-    height = 480
+    width = depth.shape[1]
+    height = depth.shape[0]
 
     cx, cy = width / 2, height / 2
     fx = width / (2 * tan_horFov)
@@ -159,56 +163,22 @@ def navy_body_fat(neck,waist,height,sex):
 
 
 if __name__ == '__main__':
-    depth_array = depth_predict(image_pathfile='./data/image.txt')
-    cv2.imshow('Depth', depth_array/10.0)
-    cv2.waitKey(0)
-    bbox = bbox_extraction(file_list='./data/image2.csv')
-    print(bbox)
+    start = time.time()
+    opt = MeasureOptions().parse()
+    with open('./data/depth.txt', 'w') as depth_file:
+        depth_file.write('./data/inputs/' + opt.image_name)
+    with open('./data/bbox.csv', 'w') as bbox_file:
+        path_csv = './data/inputs/' + opt.image_name + ',,,,,'
+        print(path_csv)
+        bbox_file.write(path_csv)
+    depth_array = depth_predict(opt, image_pathfile='./data/depth.txt')
+    # print(depth_array.shape)
+    # cv2.imshow('Depth', depth_array/10.0)
+    # cv2.waitKey(0)
+    bbox = bbox_extraction(file_list='./data/bbox.csv')
+    # print(bbox)
     neck, waist = measure(depth=depth_array, bbox=bbox)
     bf = navy_body_fat(neck,waist,height=1.82,sex='male')
     print('Your Waist:{:.2f}cm\nNeck:{:.2f}cm\nBody Fat percentage:{:.2f}%'.format(waist*100, neck*100, bf))
-
-
-
-
-
-
-
-
-
-
-
-
-import matplotlib.image as mpimg
-
-
-
-
-
-
-
-
-
-
-
-
-# img = cv2.imread('./11.jpg')
-# img = cv2.resize(img, (640, 480), interpolation=cv2.INTER_LINEAR)
-# # img_depth = mpimg.imread('./11_depth.jpg')
-# img_depth = cv2.imread('./11_depth.jpg', 0)
-# img_parts = cv2.imread('./11_parts.jpg')
-# cv2.imshow('Image', img)
-# cv2.waitKey(0)
-# cv2.imshow('Depth', img_depth)
-# cv2.waitKey(0)
-# # plt.imshow(img_depth)
-# # plt.show()
-# cv2.imshow('Body parts', img_parts)
-# cv2.waitKey(0)
-#
-# print('\n\n\n')
-# print('Your Waist:{:.2f}cm\nNeck:{:.2f}cm\nBody Fat percentage:{:.2f}%'.format(waist*100, neck*100, bf))
-
-
-# print(bf)
-# measure()
+    end = time.time()
+    print('time: ', end - start)

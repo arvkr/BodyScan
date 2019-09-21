@@ -610,7 +610,7 @@ class Pix2PixModel(base_model.BaseModel):
 
             hdf5_file_write.close()
 
-    def run_and_save_DAVIS(self, input_, targets, save_path):
+    def run_and_save_DAVIS(self, input_, targets, save_path, img_shape):
         assert (self.num_input == 3)
         input_imgs = autograd.Variable(input_, requires_grad=False)
 
@@ -643,9 +643,9 @@ class Pix2PixModel(base_model.BaseModel):
             import matplotlib.pyplot as plt
             import matplotlib
             import cv2
-            pred_d_ref_resize = cv2.resize(pred_d_ref/10.,(640,480), interpolation=cv2.INTER_LINEAR)
-            pred_d_m = cv2.resize(pred_d_ref, (640, 480), interpolation=cv2.INTER_LINEAR)
-            np.save(output_depth_path, cv2.resize(pred_d_ref,(640,480), interpolation=cv2.INTER_LINEAR))
+            pred_d_ref_resize = cv2.resize(pred_d_ref/10.,(img_shape[1],img_shape[0]), interpolation=cv2.INTER_LINEAR)
+            pred_d_m = cv2.resize(pred_d_ref, (img_shape[1],img_shape[0]), interpolation=cv2.INTER_LINEAR)
+            np.save(output_depth_path, cv2.resize(pred_d_ref, (img_shape[1],img_shape[0]), interpolation=cv2.INTER_LINEAR))
             # matplotlib.use('TKAgg')
             # plt.imshow(pred_d_ref_resize, cmap = 'gray')
             # plt.show()
