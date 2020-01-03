@@ -1,7 +1,11 @@
 # BodyScan
 Measure your body fat percentage with just a single picture!
 
-# Installation
+My submission for the Global PyTorch Summer Hackathon 2019. 
+Among 5%(out of 1466 participants) projects to be 
+[featured in the hackathon gallery](https://devpost.com/software/bodyscan). 
+
+## Installation
 ### Using virtual environment
 This code has been tested on Ubuntu, PyTorch 1.2, Python 3.6 and Nvidia GTX 940MX. It is recommended to setup a python virtual environment 
 and install the following packages.
@@ -28,10 +32,7 @@ and install the following packages.
    cd lib/
    python3 setup3.py build_ext --inplace
    ```
-### Using docker
-
-To be updated soon!
-# Usage
+## Usage
 ### Run a demo
 1. `python3 measure_body.py`  
    This takes a sample picture from `data/inputs` and predicts the body fat percentage. 
@@ -48,11 +49,19 @@ away from the camera. Some examples:
 2. Paste your picture in `data/inputs/`
 3. Run `python3 measure_body.py --image_name <name_of_your_image>.jpg`  
    Your results are shown in the screen.
+   
+## Working
 
-# Working
-To be updated soon! 
+It uses a monocular depth estimating network to produce a pixel level depth map. This was based on the CVPR 2019 paper 
+'Learning the depths of moving people by watching frozen people'. At the same time, RetinaNet object detection model 
+was finetuned to estimate the location of your body parts. PyTorch was used for both the networks. 
+This information is combined to calculate your body measurements and body fat percentage. Some 
+camera intrinsics from the exif data is also used for estimation. It uses the Navy body fat formula for calculation. 
 
-# Acknowledgements
+![Process](./data/process.png)
+
+
+## Acknowledgements
 * Depth estimation code has been borrowed & modified from this [repo](https://github.com/google/mannequinchallenge)
   (implementation of this awesome [google AI](https://mannequin-depth.github.io/) paper). 
 * Retinanet code has been borrowed & modified from [this PyTorch](https://github.com/yhenon/pytorch-retinanet) 
